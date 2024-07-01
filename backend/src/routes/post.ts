@@ -35,9 +35,9 @@ postRouter.use(async (c, next) => {
     await next()
 })
 
-postRouter.post( async (c) => {
+postRouter.post(async (c) => {
     const userId = c.get("userId")
-    console.log(userId)
+    // console.log(userId)
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -52,9 +52,9 @@ postRouter.post( async (c) => {
             authorId: userId
         }
     })
-        // console.log((await post).id)
+    console.log((await post).id)
     return c.json({
-        id: post.id        // ** post.id
+        id: (await post).id        // ** post.id
     })
 })
 
@@ -79,20 +79,21 @@ postRouter.put('/blog', async (c) => {
     })
 })
 
-postRouter.get('/', async (c) => {
+postRouter.get('/:id', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
+    const id = c.req.param("id")
     const body = await c.req.json()
     try {
         const post = prisma.post.findFirst({
             where: {
-                id: body.id
+                id: id
             }
         })
         return c.json({
-            post
+            body
         })
     } catch(e) {
         c.status(411)
