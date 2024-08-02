@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { decode, sign, verify } from 'hono/jwt';
+// import { signupInput } from '@shashidhxr/trex-common';
+// import { signinInput } from '@shashidhxr/trex-common';
 
 export const postRouter = new Hono<{
     Bindings: {
@@ -27,7 +29,7 @@ postRouter.use(async (c, next) => {
         if (!payload || typeof payload !== 'object' || !('id' in payload)) {
             throw new Error('Invalid payload');
         }
-
+        // @ts-ignore
         c.set('userId', payload.id);
         await next();
     } catch (err) {
@@ -44,7 +46,6 @@ postRouter.post('/', async (c) => {
 
     const body = await c.req.json();
 
-    // Check if the user exists
     const user = await prisma.user.findUnique({
         where: { id: userId },
     });

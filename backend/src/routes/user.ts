@@ -35,7 +35,7 @@ userRouter.post('/signup', async (c) => {
         })
     } catch(e) {
         c.status(411)
-        return c.text("Invalid")
+        return c.text("Wrong username and password")
     }
     
 })
