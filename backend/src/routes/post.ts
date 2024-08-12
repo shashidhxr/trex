@@ -124,4 +124,3 @@ postRouter.get('/:id', async (c) => {
         return c.json({ error: 'error while fetching post' });
     }
 });
-

@@ -8,6 +8,7 @@
     "@prisma/client": "^5.15.1",
     "@prisma/extension-accelerate": "^1.1.0",
     "@shashidhxr/trex-common": "^1.0.0",
+    "axios": "^1.7.3",
     "hono": "^4.4.6",
     "prisma": "^5.15.1"
   },

@@ -1,4 +1,3 @@
-
 import { Hono } from "hono";
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
@@ -11,7 +10,6 @@ export const userRouter = new Hono<{
     }
 }>()
 
-
 userRouter.post('/signup', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -22,7 +20,7 @@ userRouter.post('/signup', async (c) => {
     try {
         const user = await prisma.user.create({
             data: {
-                email: body.email,
+                email: body.username,
                 password: body.password,
             }
         })
@@ -35,9 +33,8 @@ userRouter.post('/signup', async (c) => {
         })
     } catch(e) {
         c.status(411)
-        return c.text("Wrong username and password")
+        return c.text("Wrong usernamezzz and password")
     }
-    
 })
 
 userRouter.post('/signin', async (c) => {
