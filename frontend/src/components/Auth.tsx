@@ -9,7 +9,8 @@ import { BACKEND_URL } from "../config";
 
 export const Auth = ({ type }: {type: "signup" | "signin"}) => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+
     
     const [postInputs, setPostInputs] = useState<SignupInput>({
         name: "",
@@ -21,10 +22,10 @@ export const Auth = ({ type }: {type: "signup" | "signin"}) => {
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type == "signup"? "signup": "signin"}`, postInputs)
             const jwt = response.data
-            localStorage.setItem("token", jwt)
+            localStorage.set("token", jwt)
             navigate("/blogs")
         } catch(e) {
-            alert("error while signing up") 
+            alert("error while signing up")
         }
     }
 
