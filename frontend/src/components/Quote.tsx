@@ -3,7 +3,7 @@ export const Quote = () => {
         <div className="flex justify-center">
             <div className="max-w-lg">
                 <div className="max-w-lg text-center text-3xl font-semibold font-mono">
-                "Success usually comes to those who are too busy to be looking for it.
+                "Success usually comes to those who are too busy to be looking for it"
                 </div>
                 <div className="max-w-md text-center text-xl font-semibold">
                     Julies Seinfield
