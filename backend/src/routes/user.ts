@@ -27,13 +27,13 @@ userRouter.post('/signup', async (c) => {
         const token = await sign({
             id: user.id,
         }, c.env.JWT_SECRET)
-    
+        
         return c.json({
             jwt: token
         })
     } catch(e) {
         c.status(411)
-        return c.text("Wrong usernamezzz and password")
+        return c.text("Wrong username and password")
     }
 })
 

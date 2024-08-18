@@ -19,23 +19,17 @@ postRouter.use(async (c, next) => {
     const authHeader = c.req.header('Authorization');
     if (!authHeader) {
         c.status(401);
-        return c.json({ error: 'unauthorized' });
+        return c.json({ error: 'no token generated' });
     }
+    const token = authHeader
+    const payload = await verify(token, c.env.JWT_SECRET);
 
-    try {
-        const token = authHeader
-        const payload = await verify(token, c.env.JWT_SECRET);
-
-        if (!payload || typeof payload !== 'object' || !('id' in payload)) {
-            throw new Error('Invalid payload');
-        }
-        // @ts-ignore
-        c.set('userId', payload.id);
-        await next();
-    } catch (err) {
-        c.status(401);
-        return c.json({ error: 'unauthorized' });
+    if (!payload || typeof payload !== 'object' || !('id' in payload)) {
+        throw new Error('Invalid payload');
     }
+    // @ts-ignore
+    c.set('userId', payload.id);
+    await next();
 });
 
 postRouter.post('/', async (c) => {
@@ -92,7 +86,18 @@ postRouter.get('/bulk', async (c) => {
     }).$extends(withAccelerate());
 
     try {
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            select: {
+                title: true,
+                content: true,
+                id: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
         return c.json(posts);
     } catch (e) {
         c.status(411);
