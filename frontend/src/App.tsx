@@ -6,6 +6,7 @@ import { Blogs } from './pages/Blogs'
 import './App.css'
 import { Landing } from './pages/Landing'
 import { Publish } from './pages/Publish'
+// import { Contacts } from './pages/Contacts'
 
 function App() {
 

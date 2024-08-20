@@ -1,13 +1,18 @@
-// import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../components/footer";
-
+import { Contacts } from "../components/Contacts"; // Import the Contacts component
 
 export const Landing = () => {
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+  const [isContactOpen, setContactOpen] = useState(false); // State to manage the contact modal
+
+  const closeModal = () => {
+    setContactOpen(false);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#222222]">
+    <div className="flex flex-col min-h-screen bg-[#222222] relative">
       <div className="bg-center bg-no-repeat bg-cover bg-[url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-[#373A40] bg-blend-multiply flex-grow">
 
         <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
@@ -48,9 +53,40 @@ export const Landing = () => {
           </div>
         </div>
       </div>
-      <Footer></Footer>
+
+      <Footer onContactClick={() => setContactOpen(true)} /> {/* Passing the modal open function to Footer */}
+
+      
+      {isContactOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50">
+    <div className="bg-transparent p-6 rounded-lg shadow-lg relative max-w-xl mx-auto">
+      <Contacts />
+      <button 
+        type="button" 
+        className="absolute top-2 right-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        onClick={closeModal}
+      >
+        <svg 
+          className="w-4 h-4" 
+          aria-hidden="true" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 14 10"
+        >
+          <path 
+            stroke="currentColor" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth="2" 
+            d="M1 5h12m0 0L9 1m4 4L9 9"
+          />
+        </svg>
+        <span className="sr-only">Close modal</span>
+      </button>
     </div>
-  ); 
+  </div>
+)}
+
+    </div>
+  );
 };
-
-
