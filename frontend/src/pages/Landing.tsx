@@ -20,7 +20,7 @@ export const Landing = () => {
             We invest in the world’s potential
           </h1>
           <p className="mb-8 text-lg font-normal text-[#686D76] lg:text-xl sm:px-16 lg:px-48">
-            Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.
+          At Trex, we believe in the power of ideas to shape the future. We explore where creativity, technology, and insight converge to unlock new opportunities and drive meaningful progress.
           </p>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
             <a onClick={() => {navigate('/signup')}}
