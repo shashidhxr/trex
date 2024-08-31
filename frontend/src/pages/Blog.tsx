@@ -1,5 +1,10 @@
+// import { useBlogs } from "../hooks"
+
 export const Blog = () => {
     return <div>
-        Blog
+        blog blog
+        {/* const { id } = useParams();
+        const { loading, blog } = useBlogs({
+        }) */}
     </div>
 }

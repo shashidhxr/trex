@@ -27,6 +27,8 @@ userRouter.post('/signup', async (c) => {
         const token = await sign({
             id: user.id,
         }, c.env.JWT_SECRET)
+
+        localStorage.setItem('token', token);
         
         return c.json({
             jwt: token

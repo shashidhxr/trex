@@ -86,7 +86,7 @@ postRouter.get('/bulk', async (c) => {
     }).$extends(withAccelerate());
 
     try {
-        const posts = await prisma.post.findMany({
+        const blogs = await prisma.post.findMany({
             select: {
                 title: true,
                 content: true,
@@ -98,7 +98,7 @@ postRouter.get('/bulk', async (c) => {
                 }
             }
         });
-        return c.json(posts);
+        return c.json(blogs);
     } catch (e) {
         c.status(411);
         return c.json({ error: 'error while fetching posts' });
