@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Footer } from '../components/Footer';
+import { Foot } from '../components/Foot';
 import { Contacts } from "../components/Contacts"; // Import the Contacts component
 
 export const Landing = () => {
@@ -54,7 +54,7 @@ export const Landing = () => {
         </div>
       </div>
 
-      <Footer onContactClick={() => setContactOpen(true)} /> {/* Passing the modal open function to Footer */}
+      <Foot/> 
 
       {isContactOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50">
