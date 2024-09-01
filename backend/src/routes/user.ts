@@ -20,21 +20,21 @@ userRouter.post('/signup', async (c) => {
     try {
         const user = await prisma.user.create({
             data: {
-                email: body.username,
+                name: body.name,
+                username: body.username,
                 password: body.password,
             }
         })
         const token = await sign({
             id: user.id,
         }, c.env.JWT_SECRET)
-
-        localStorage.setItem('token', token);
         
         return c.json({
             jwt: token
         })
     } catch(e) {
         c.status(411)
+        console.log(e)
         return c.text("Wrong username and password")
     }
 })
@@ -49,7 +49,7 @@ userRouter.post('/signin', async (c) => {
     try{
         const user = await prisma.user.findFirst({
             where: {
-                email: body.email,
+                username: body.username,
                 password: body.password,
             }
         })
