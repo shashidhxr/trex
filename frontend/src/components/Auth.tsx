@@ -44,7 +44,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                         onChange={(e) =>
                             setPostInputs({
                                 ...postInputs,
-                                name: e.target.value,
+                                name: e.target.value
                             })
                         }
                     />
@@ -104,7 +104,6 @@ function LabelledInputBox({ label, placeholder, onChange, type }: LabelledInputB
             <input
                 onChange={onChange}
                 type={type || "text"}
-                id="first_name"
                 className="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder={placeholder}
                 required

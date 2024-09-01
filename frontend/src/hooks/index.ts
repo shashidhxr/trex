@@ -8,10 +8,9 @@ interface Blogpost {
     author: {
         name: string | null
     }
-    publishedDate?: string;
+    publishedDate: string;
     content: string;
 }
-
 
 export const useBlogs = () => {
     const [loading, setLoading] = useState(false)
@@ -44,7 +43,9 @@ export const useBlogs = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const token = localStorage.getItem('token'); 
+
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMTg1YjNiLTRkZGItNGIyZi05NjhiLTc0NTgwZGJjMDllOSJ9.e7rldtKkLJ2TQOgZv5cbme_x19tQMLvF8HjvYLTIs5g"; 
+                // const token = localStorage.getItem('token'); 
                 const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
                     headers: {
                         Authorization: token, 
