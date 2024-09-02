@@ -13,7 +13,7 @@ interface Blogpost {
 }
 
 export const useBlogs = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [blogs, setBlogs] = useState<Blogpost[]>([])
 
     // useEffect(() => {
@@ -45,7 +45,8 @@ export const useBlogs = () => {
             try {
 
                 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMTg1YjNiLTRkZGItNGIyZi05NjhiLTc0NTgwZGJjMDllOSJ9.e7rldtKkLJ2TQOgZv5cbme_x19tQMLvF8HjvYLTIs5g"; 
-                // const token = localStorage.getItem('token'); 
+                // const token = localStorage.getItem("token")
+                console.log(token) 
                 const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
                     headers: {
                         Authorization: token, 
