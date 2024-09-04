@@ -1,10 +1,12 @@
 // import { useBlogs } from "../hooks"
+import { BlogPage } from "../components/BlogPage"
+import { Appbar } from "../components/Appbar"
+import { BlogFooterBar } from "../components/BlogFooter"
 
 export const Blog = () => {
     return <div>
-        blog blog
-        {/* const { id } = useParams();
-        const { loading, blog } = useBlogs({
-        }) */}
+        <Appbar></Appbar>
+        <BlogPage></BlogPage>
+        <BlogFooterBar></BlogFooterBar>
     </div>
 }

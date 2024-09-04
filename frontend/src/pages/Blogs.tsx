@@ -24,6 +24,7 @@ export const Blogs = () => {
                             title={blog.title}
                             content={blog.content}
                             publishedDate={blog.publishedDate || "not available"}
+                            onClick={() => navigate(`/blog/${blog.id}`)}
                         />
                     ))}
                 </div>
