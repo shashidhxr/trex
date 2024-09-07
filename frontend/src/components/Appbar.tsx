@@ -1,18 +1,26 @@
+import { useNavigate } from 'react-router-dom';
 import Avatar from './Avatar';
 
 export const Appbar = () => {
+    const navigate = useNavigate()
+    
     return (
         <div className="flex justify-between px-10 py-2 border-b-2">
-            {/* Left Section: Logo */}
             <div className="flex items-center">
                 <a href="/" className="text-2xl font-bold text-black">
                     trex.
                 </a>
             </div>
 
-            {/* Right Section: Search Bar and Avatar */}
             <div className="flex items-center">
-                {/* Search Bar */}
+            <button
+                onClick={() => {
+                    navigate('/create')
+                }}
+                className="bg-blue-400 text-white px-4 py-1 mx-4 border border-black rounded-md shadow-md hover:bg-blue-500 hover:shadow-lg transition duration-300"
+            >
+                Publish
+            </button>
                 <div>
                     <input
                         type="text"

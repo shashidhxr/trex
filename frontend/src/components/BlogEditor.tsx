@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
+import { useNavigate } from 'react-router-dom';
 
 export const BlogEditor = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const navigate = useNavigate()
 
     const handlePublish = async () => {
         try {
             // const token = localStorage.getItem("token")
-            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkZmEyNjA0LWQwMGYtNDU4Zi1hNjQ0LTM0YjUzYzIzOTk2YiJ9.PkUV2AKPZ7wD9Bj10lfugINVa7XxOgIILp0flNQDI9s";
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNkNDkxNDJkLThiNTMtNGU3OS1iY2U4LWVjODM4ZDIyNGExMiJ9.w2Nc9M1I_Hg52W2BPfj0BDO-3n9CjWzJcZAGIDVIi2A";
             console.log(token)
             if (!token) {
                 throw new Error("Token not found. Please log in.");
@@ -30,6 +32,7 @@ export const BlogEditor = () => {
             // Reset the form fields
             setTitle('');
             setContent('');
+            navigate('/blogs')
         } catch (e) {
             console.log(e)
         }

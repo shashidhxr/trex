@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../config"
 import axios from "axios"
 
-interface Blogpost {
+export  interface Blogpost {
     id: string
     title: string
     author: {
@@ -12,65 +12,51 @@ interface Blogpost {
     content: string;
 }
 
+export const useBlog = ({
+    id
+}: {
+    id: string
+}) => {
+    const [loading, setLoading] = useState(true)
+    const [blog, setBlog] =  useState<Blogpost>()
+
+    useEffect(() => {
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNkNDkxNDJkLThiNTMtNGU3OS1iY2U4LWVjODM4ZDIyNGExMiJ9.w2Nc9M1I_Hg52W2BPfj0BDO-3n9CjWzJcZAGIDVIi2A"; 
+                // const token = localStorage.getItem("token")
+                // console.log(token) 
+                axios.get(`${BACKEND_URL}/api/v1/post/${id}`, {
+                    headers: {
+                        Authorization: token, 
+                    },
+                })
+                .then(response => {
+                    setBlog(response.data.blog)
+                    setLoading(false)   
+                })
+    }, [id]);
+
+    return {
+        loading,
+        blog
+    }
+}
+
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true)
     const [blogs, setBlogs] = useState<Blogpost[]>([])
 
-    // useEffect(() => {
-    //     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMTg1YjNiLTRkZGItNGIyZi05NjhiLTc0NTgwZGJjMDllOSJ9.e7rldtKkLJ2TQOgZv5cbme_x19tQMLvF8HjvYLTIs5g"
-    //     console.log("token: ", token)
-    //         axios.get(`${BACKEND_URL}/api/v1/post/bulk`, { headers: {
-    //             Authorization: token
-    //     }})
-    //     .then(res => {
-    //         console.log("Response:", res);
-    //         if (res.data && Array.isArray(res.data.blogs)) {
-    //             setBlogs(res.data.blogs);
-    //         } else {
-    //             console.error("Unexpected response structure:", res.data);
-    //             setBlogs([]);
-    //         }
-    //     })
-    //     .catch(error => {
-    //         console.error("Error fetching blogs:", error);
-    //         setBlogs([]); // Ensure blogs is always an array
-    //     })
-    //     .finally(() => {
-    //         setLoading(false); // Always executed, regardless of success or failure
-    //     });
-    // }, [])
-
     useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-
-                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkMTg1YjNiLTRkZGItNGIyZi05NjhiLTc0NTgwZGJjMDllOSJ9.e7rldtKkLJ2TQOgZv5cbme_x19tQMLvF8HjvYLTIs5g"; 
-                // const token = localStorage.getItem("token")
-                console.log(token) 
-                const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
-                    headers: {
-                        Authorization: token, 
-                    },
-                });
-    
-                console.log("Response:", response);
-    
-                if (response.data && Array.isArray(response.data)) {
-                    setBlogs(response.data);
-                } else {
-                    console.error("Unexpected response structure:", response.data);
-                    setBlogs([]); // Ensure blogs is always an array
-                }
-            } catch (error) {
-                console.error("Error fetching blogs:", error);
-                setBlogs([]); // Ensure blogs is always an array
-            } finally {
-                setLoading(false);
-            }
-        };
-    
-        fetchBlogs();
-    }, []);
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNkNDkxNDJkLThiNTMtNGU3OS1iY2U4LWVjODM4ZDIyNGExMiJ9.w2Nc9M1I_Hg52W2BPfj0BDO-3n9CjWzJcZAGIDVIi2A"
+        axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
+            headers: {
+                Authorization: token
+            },
+        })
+        .then(response => {
+            setBlogs(response.data.blogs)
+            setLoading(false)
+        })
+    }, [])
 
     return {
         loading,
