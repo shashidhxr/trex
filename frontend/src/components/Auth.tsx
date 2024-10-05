@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SignupInput } from "@shashidhxr/trex-common";
 import { BACKEND_URL } from "../config";
+import SigninButtons from "./SigninButtons";
+import AuthRedirectHandler from "../auth";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     const navigate = useNavigate();
@@ -12,6 +14,16 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         username: "",
         password: ""
     });
+
+
+    const handleGoogleSignup = () => {
+        window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_BACKEND_URL}/auth/google/callback&response_type=code&scope=email profile`;
+    };
+
+    const handleGitHubSignup = () => {
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_BACKEND_URL}/auth/github/callback&scope=user:email`;
+    };
+
 
     async function sendRequest() {
         try {
@@ -83,6 +95,11 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                     >
                         {type === "signup" ? "Sign up" : "Sign In"}
                     </button>
+                    
+                    <div>
+                        <SigninButtons></SigninButtons>
+                        {/* <AuthRedirectHandler></AuthRedirectHandler> */}
+                    </div>
                 </div>
             </div>
             

@@ -6,20 +6,8 @@ DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsI
 
 JWT_SECRET = "secret-key"
 
-# MY_VAR = "my-variable"
- 
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-# [[r2_buckets]]
-# binding = "MY_BUCKET"
-# bucket_name = "my-bucket"
-
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "my-database"
-# database_id = ""
-
-# [ai]
-# binding = "AI"
+GOOGLE_CLIENT_ID = 'Ov23ctWxf7EdMSRwEDY5'
+GOOGLE_CLIENT_SECRET = '94b717ed7727f5349be3b4f019beb4634d566561'
+GITHUB_CLIENT_ID = 'Ov23ctWxf7EdMSRwEDY5'
+GITHUB_CLIENT_SECRET = '09d9cf7f68e8c2283a7d0bb15696d375023954f6'

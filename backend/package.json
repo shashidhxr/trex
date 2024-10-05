@@ -5,16 +5,18 @@
     "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
+    "@octokit/rest": "^21.0.2",
     "@prisma/client": "^5.15.1",
     "@prisma/extension-accelerate": "^1.1.0",
     "@shashidhxr/trex-common": "^1.0.0",
     "axios": "^1.7.3",
+    "google-auth-library": "^9.14.1",
     "hono": "^4.4.6",
     "prisma": "^5.15.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
-    "prism": "^4.1.2",
-    "wrangler": "^3.62.0"
+    "prism": "^1.0.0",
+    "wrangler": "^2.21.1"
   }
 }
