@@ -7,14 +7,13 @@ const SigninButtons: React.FC = () => {
   return (
     <div className='grid grid-cols-2 gap-1 mt-2'>
       <button
-        onClick={() => loginWithRedirect({ connection: 'google' })}
-        className="bg-red-500 text-white py-2 mr-1 px-5 rounded-md"
+        // onClick={() => loginWithRedirect({ connection: 'google' })}
+        // className="bg-red-500 text-white py-2 mr-1 px-5 rounded-md"
       >
         Sign in with Google
       </button>
       <button
-        onClick={() => loginWithRedirect({ connection: 'github' })}
-        className="bg-gray-700 text-white py-2 ml-1 px-5 rounded-md"
+        // onClick={() => loginWithRedirect({ connection: 'github' })}
       >
         Sign in with GitHub
       </button>
