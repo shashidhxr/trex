@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Foot } from '../components/Foot';
 import { Contacts } from "../components/Contacts";
 
@@ -10,7 +10,7 @@ import { cn } from "../../lib/utils";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const Landing = () => {
-  const navigate = useNavigate();
+//   const navigate = useNavigate();
   const [isContactOpen, setContactOpen] = useState(false);
 
   const closeModal = () => {

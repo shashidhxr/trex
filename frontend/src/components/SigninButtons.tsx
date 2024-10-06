@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 
 const SigninButtons: React.FC = () => {
-  const { loginWithRedirect } = useAuth0();
+//   const { loginWithRedirect } = useAuth0();
 
   return (
     <div className='grid grid-cols-2 gap-1 mt-2'>
