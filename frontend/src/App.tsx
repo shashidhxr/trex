@@ -7,7 +7,7 @@ import './App.css'
 import { Landing } from './pages/Landing'
 import { Publish } from './pages/Publish'
 import { Test } from './pages/test'
-import AuthRedirectHandler from './auth'
+import { Profile } from './pages/Profile'
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
                 <Route path='/home' element={<Home></Home>}></Route>
                 <Route path='/create' element={<Publish></Publish>}></Route>
                 <Route path='/test' element={<Test></Test>}></Route>
-                <Route path='/auth' element={<AuthRedirectHandler />} />
+                <Route path='/profile' element={<Profile></Profile>}></Route>
             </Routes>
       </BrowserRouter>
     </>

@@ -6,6 +6,8 @@ import { Contacts } from "../components/Contacts";
 import { Boxes } from '../components/ui/backround-boxes';
 // @ts-ignore
 import { cn } from "../../lib/utils";
+// import LoginButton from '../components/LoginButtons';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const Landing = () => {
   const navigate = useNavigate();
@@ -14,6 +16,9 @@ export const Landing = () => {
   const closeModal = () => {
     setContactOpen(false);
   };
+
+  const { loginWithRedirect } = useAuth0();
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-[#222222] "> 
@@ -29,7 +34,7 @@ export const Landing = () => {
                 At Trex, we believe in the power of ideas to shape the future. We explore where creativity, technology, and insight converge to unlock new opportunities and drive meaningful progress.
             </p>
             <div className={cn("flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 z-20")}>
-                <a onClick={() => {navigate('/signup')}}
+                <a onClick={() => loginWithRedirect()}
                     href="#"
                     className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-[#EEEEEE] rounded-lg bg-[#DC5F00] hover:bg-red-500 focus:ring-4 focus:ring-[#DC5F00]/50 dark:focus:ring-[#BF4F00]">
                     Sign Up
@@ -48,7 +53,7 @@ export const Landing = () => {
                     />
                     </svg>
                 </a>
-                <a onClick={() => {navigate('/signin')}}
+                <a onClick={() => loginWithRedirect()}
                     href="#"
                     className="inline-flex justify-center items-center py-3 px-5 sm:ml-4 text-base font-medium text-center text-[#EEEEEE] rounded-lg border border-[#EEEEEE] hover:bg-cyan-900 hover:focus:ring-4 focus:ring-gray-400">
                     Sign In
