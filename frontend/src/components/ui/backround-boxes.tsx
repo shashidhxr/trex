@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from '../../../lib/utils/'
+// import { cn } from "../../../lib/utils";
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const rows = new Array(150).fill(1);
@@ -72,5 +72,13 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
     </div>
   );
 };
+
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 
 export const Boxes = React.memo(BoxesCore);
