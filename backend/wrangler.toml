@@ -1,0 +1,32 @@
+name = "backend"
+main = "src/index.ts"
+compatibility_date = "2024-10-19"
+compatibility_flags = [ "nodejs_compat" ]
+
+# [vars]
+# MY_VAR = "my-variable"
+
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
+
+# [observability]
+# enabled = true
+# head_sampling_rate = 1
+
+[vars]
+    DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiZGVkYzA2MTQtZmI4OS00NjVmLWI2NTQtODhiODA4YzRhNTE3IiwidGVuYW50X2lkIjoiYWQ1ODMyMmJiMThiZWNiMGI0MGY5NzE3ZjJhMWRjMTYxNDRmMzg2YzYxZTgzNGQwZDgzODY0OWFjYzJiMGEzMSIsImludGVybmFsX3NlY3JldCI6ImVhZWJhZDdkLTk1NTctNDNmNC04OTRiLTZmYmNjZWYzZTgzNCJ9.GtiWn-ukqkrE5b3VJ0l1UEcYCgzHOIQbDbClBUoNFDg"
+
+    JWT_SECRET = 'trex-key'

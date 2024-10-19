@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 interface CardProps {
     id: string,
-  authorName: string;
-  title: string;
-  content: string;
-  publishedDate: string;
+    authorName: string;
+    title: string;
+    content: string;
+    publishedDate: string;
 }
 
 export const BlogCard = ({
