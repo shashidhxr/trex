@@ -10,6 +10,7 @@ lerna-debug.log*
 *.local
 node_modules
 .env
+config.ts
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

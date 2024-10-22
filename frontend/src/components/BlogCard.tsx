@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 interface CardProps {
-    id: string,
+    id: string;
     authorName: string;
     title: string;
     content: string;
@@ -15,19 +15,21 @@ export const BlogCard = ({
     content,
     publishedDate,
 }: CardProps) => {
-  return (
+    return (
         <Link to={`/blog/${id}`}>
-            <div className="w-full h-40 my-3 mx-5 px-10 rounded overflow-hidden shadow-lg bg-white p-6 hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                <div className="text-sm text-gray-500 mb-2">
-                    <span className="font-semibold">{authorName}</span> &middot; {publishedDate}
-                </div>
-                <div className="text-xl font-bold text-gray-800 mb-2">
-                    {title}
-                </div>
-                <div className="text-gray-700">
-                    {content.slice(0, 100) + "..."}
+            <div className="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="p-6">
+                    <div className="text-sm text-gray-500 mb-2">
+                        <span className="font-semibold">{authorName}</span> &middot; {publishedDate}
+                    </div>
+                    <div className="text-xl font-bold text-gray-800 mb-2">
+                        {title}
+                    </div>
+                    <div className="text-gray-700 line-clamp-2">
+                        {content}
+                    </div>
                 </div>
             </div>
         </Link>
-  );
+    );
 };
