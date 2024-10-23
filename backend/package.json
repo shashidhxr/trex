@@ -12,11 +12,12 @@
         "axios": "^1.7.3",
         "google-auth-library": "^9.14.1",
         "hono": "^4.4.6",
-        "prisma": "^5.21.1"
+        "prisma": "^5.21.1",
+        "uuid": "^10.0.0"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^4.20240529.0",
         "prism": "^1.0.0",
-        "wrangler": "^3.81.0"
+        "wrangler": "^3.82.0"
     }
 }

@@ -1,85 +1,144 @@
 import { Hono } from 'hono';
 import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
-import { decode, sign, verify } from 'hono/jwt';
-// import { signupInput } from '@shashidhxr/trex-common';
-// import { signinInput } from '@shashidhxr/trex-common';
+// @ts-ignore
+import { v5 as uuidv5 } from 'uuid';
+
+interface Auth0User {
+    sub: string;
+    email: string;
+    name?: string;
+}
+
+const AUTH0_NAMESPACE = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+
+function convertAuth0SubToUUID(sub: string): string {
+    return uuidv5(sub, AUTH0_NAMESPACE);
+}
 
 export const postRouter = new Hono<{
     Bindings: {
         DATABASE_URL: string;
-        JWT_SECRET: string;
-    },
-    Variables: {
-        userId: string;
     }
 }>();
 
-postRouter.use(async (c, next) => {
+// Enhanced middleware to extract user info and ensure user exists in database
+async function ensureUserExists(c: any) {
     const authHeader = c.req.header('Authorization');
-    if (!authHeader) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         c.status(401);
-        return c.json({ error: 'no token generated' });
+        return c.json({ error: 'No token provided' });
     }
-    const token = authHeader
-    const payload = await verify(token, c.env.JWT_SECRET);
 
-    if (!payload || typeof payload !== 'object' || !('id' in payload)) {
-        throw new Error('Invalid payload');
+    try {
+        const userInfo = await c.req.json();
+        if (!userInfo.sub || !userInfo.email) {
+            c.status(401);
+            return c.json({ error: 'Invalid user info' });
+        }
+
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+
+        const userId = convertAuth0SubToUUID(userInfo.sub);
+
+        // Try to find existing user
+        let user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        // If user doesn't exist, create them
+        if (!user) {
+            user = await prisma.user.create({
+                data: {
+                    id: userId,
+                    email: userInfo.email,
+                    name: userInfo.name || null,
+                }
+            });
+        }
+
+        // Return both Auth0 info and database user
+        return {
+            ...userInfo,
+            id: userId,
+            dbUser: user
+        };
+    } catch (e) {
+        console.error('Error in ensureUserExists:', e);
+        c.status(401);
+        return c.json({ error: 'Error processing user information' });
     }
-    // @ts-ignore
-    c.set('userId', payload.id);
-    await next();
-});
+}
 
+// Create post endpoint
 postRouter.post('/', async (c) => {
-    const userId = c.get('userId');
+    const userInfo = await ensureUserExists(c);
+    if (!userInfo.id) return c.json({ error: 'Unauthorized' });
+
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     const body = await c.req.json();
+    
+    try {
+        const post = await prisma.post.create({
+            data: {
+                title: body.title,
+                content: body.content,
+                authorId: userInfo.id,
+            },
+        });
 
-    const user = await prisma.user.findUnique({
-        where: { id: userId },
-    });
-
-    if (!user) {
-        c.status(404);
-        return c.json({ error: 'User not found' });
+        return c.json({ id: post.id });
+    } catch (e) {
+        console.error('Error creating post:', e);
+        c.status(500);
+        return c.json({ error: 'Error creating post' });
     }
-
-    const post = await prisma.post.create({
-        data: {
-            title: body.title,
-            content: body.content,
-            authorId: userId,
-        },
-    });
-
-    return c.json({ id: post.id });
 });
 
+// Update post endpoint
 postRouter.put('/blog', async (c) => {
+    const userInfo = await ensureUserExists(c);
+    if (!userInfo.id) return c.json({ error: 'Unauthorized' });
+
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
     const body = await c.req.json();
 
-    const post = await prisma.post.update({
-        where: {
-            id: body.id,
-        },
-        data: {
-            title: body.title,
-            content: body.content,
-        },
-    });
+    try {
+        const existingPost = await prisma.post.findUnique({
+            where: { id: body.id },
+            select: { authorId: true }
+        });
 
-    return c.json({ id: post.id });
+        if (!existingPost || existingPost.authorId !== userInfo.id) {
+            c.status(403);
+            return c.json({ error: 'Unauthorized to edit this post' });
+        }
+
+        const post = await prisma.post.update({
+            where: { id: body.id },
+            data: {
+                title: body.title,
+                content: body.content,
+            },
+        });
+
+        return c.json({ id: post.id });
+    } catch (e) {
+        console.error('Error updating post:', e);
+        c.status(500);
+        return c.json({ error: 'Error updating post' });
+    }
 });
 
+// Get bulk posts endpoint
 postRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -102,11 +161,13 @@ postRouter.get('/bulk', async (c) => {
             blogs: posts
         });
     } catch (e) {
+        console.error('Error fetching posts:', e);
         c.status(411);
         return c.json({ error: 'error while fetching posts' });
     }
 });
 
+// Get single post endpoint
 postRouter.get('/:id', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -115,10 +176,8 @@ postRouter.get('/:id', async (c) => {
     const id = c.req.param('id');
     try {
         const post = await prisma.post.findFirst({
-            where: {
-                id: id,
-            },
-            select:{
+            where: { id: id },
+            select: {
                 id: true,
                 title: true,
                 content: true,
@@ -139,7 +198,10 @@ postRouter.get('/:id', async (c) => {
             blog: post
         });
     } catch (e) {
+        console.error('Error fetching post:', e);
         c.status(411);
         return c.json({ error: 'error while fetching post' });
     }
 });
+
+export default postRouter;
