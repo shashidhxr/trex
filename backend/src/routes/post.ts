@@ -22,7 +22,6 @@ export const postRouter = new Hono<{
     }
 }>();
 
-// Enhanced middleware to extract user info and ensure user exists in database
 async function ensureUserExists(c: any) {
     const authHeader = c.req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -31,48 +30,56 @@ async function ensureUserExists(c: any) {
     }
 
     try {
-        const userInfo = await c.req.json();
+        // Decode the Auth0 token and retrieve user info
+        const token = authHeader.split(' ')[1];
+        const userInfo = await fetch(`https://trex0.us.auth0.com/userinfo`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => res.json());
+
+        // Ensure user info contains essential fields
         if (!userInfo.sub || !userInfo.email) {
             c.status(401);
-            return c.json({ error: 'Invalid user info' });
+            return c.json({ error: 'Invalid user info from Auth0' });
         }
 
         const prisma = new PrismaClient({
             datasourceUrl: c.env.DATABASE_URL,
         }).$extends(withAccelerate());
 
+        // Convert Auth0 `sub` to a UUID for consistency in database
         const userId = convertAuth0SubToUUID(userInfo.sub);
 
-        // Try to find existing user
+        // Check if user exists in the database
         let user = await prisma.user.findUnique({
-            where: { id: userId }
+            where: { id: userId },
         });
 
-        // If user doesn't exist, create them
+        // If user doesn't exist, create them in the database
         if (!user) {
             user = await prisma.user.create({
                 data: {
                     id: userId,
                     email: userInfo.email,
-                    name: userInfo.name || null,
-                }
+                    name: userInfo.name || 'Anonymous', // Default name if none provided
+                },
             });
         }
 
-        // Return both Auth0 info and database user
         return {
             ...userInfo,
             id: userId,
-            dbUser: user
+            dbUser: user, // Return user info with database entry
         };
-    } catch (e) {
-        console.error('Error in ensureUserExists:', e);
-        c.status(401);
+    } catch (error) {
+        console.error('Error in ensureUserExists:', error);
+        c.status(500);
         return c.json({ error: 'Error processing user information' });
     }
 }
 
-// Create post endpoint
+
 postRouter.post('/', async (c) => {
     const userInfo = await ensureUserExists(c);
     if (!userInfo.id) return c.json({ error: 'Unauthorized' });
@@ -88,7 +95,8 @@ postRouter.post('/', async (c) => {
             data: {
                 title: body.title,
                 content: body.content,
-                authorId: userInfo.id,
+                // authorId: userInfo.id,
+                authorId: body.authorId,
             },
         });
 
@@ -100,7 +108,6 @@ postRouter.post('/', async (c) => {
     }
 });
 
-// Update post endpoint
 postRouter.put('/blog', async (c) => {
     const userInfo = await ensureUserExists(c);
     if (!userInfo.id) return c.json({ error: 'Unauthorized' });
@@ -138,7 +145,6 @@ postRouter.put('/blog', async (c) => {
     }
 });
 
-// Get bulk posts endpoint
 postRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -167,7 +173,6 @@ postRouter.get('/bulk', async (c) => {
     }
 });
 
-// Get single post endpoint
 postRouter.get('/:id', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
