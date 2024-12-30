@@ -79,7 +79,6 @@ async function ensureUserExists(c: any) {
     }
 }
 
-
 postRouter.post('/', async (c) => {
     const userInfo = await ensureUserExists(c);
     if (!userInfo.id) return c.json({ error: 'Unauthorized' });
