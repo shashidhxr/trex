@@ -16,9 +16,8 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     async function sendRequest() {
         try {
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs);
-            console.log(response)
-            // const jwt = response.data;
-            // localStorage.setItem("token", jwt);
+            const jwt = response.data;
+            localStorage.setItem("token", jwt);
             navigate("/blogs");
         } catch (e) {
             alert("Error while signing up");
@@ -52,7 +51,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                 )}
                 <LabelledInputBox
                     type="username"
-                    label="username"
+                    label="Username"
                     placeholder="Enter your username"
                     onChange={(e) =>
                         setPostInputs({
