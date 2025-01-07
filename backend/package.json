@@ -11,7 +11,7 @@
         "@shashidhxr/trex-common": "^1.0.0",
         "axios": "^1.7.3",
         "google-auth-library": "^9.14.1",
-        "hono": "^4.4.6",
+        "hono": "^4.6.15",
         "prisma": "^5.21.1",
         "uuid": "^10.0.0"
     },

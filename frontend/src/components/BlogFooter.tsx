@@ -7,7 +7,7 @@ export const BlogFooterBar = () => {
         <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-md">
             <div className="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Navigation Button */}
-                <button className="text-gray-600 hover:text-blue-600 transition-colors duration-200" onClick={() => navigate('/blogs')}>
+                <button className="text-gray-600 hover:text-blue-600 transition-colors duration-200" onClick={() => navigate('/home')}>
                     ← Back to Blog List
                 </button>
 
