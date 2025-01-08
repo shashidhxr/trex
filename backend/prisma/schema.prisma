@@ -17,8 +17,10 @@ model User {
     id      String  @id @default(uuid())
     username   String  @unique
     name    String
-    password    String 
+    email   String @unique
+    picture String
     posts   Post[]
+    CreatedAt DateTime @default(now())
 }
 
 model Post {

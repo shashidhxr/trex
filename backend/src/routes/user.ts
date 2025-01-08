@@ -13,63 +13,95 @@ export const userRouter = new Hono<{
 userRouter.post('/signup', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
-    
-    const body = await c.req.json()
-    
+    }).$extends(withAccelerate());
+
+    const body = await c.req.json();
+
     try {
         const user = await prisma.user.create({
             data: {
                 name: body.name,
                 username: body.username,
-                password: body.password,
-            }
-        })
-        const token = await sign({
-            id: user.id,
-        }, c.env.JWT_SECRET)
-        
+                email: body.email,
+                picture: body.picture
+            },
+        });
+
+        const token = await sign(
+            { id: user.id },
+            c.env.JWT_SECRET,
+            // { expiresIn: "1h" } // Optional expiration time
+        );
+
         return c.json({
-            jwt: token
-        })
-    } catch(e) {
-        c.status(411)
-        console.log(e)
-        return c.text("Wrong username and password")
+            jwt: token,
+            message: "User signed up successfully",
+        });
+    } catch (e) {
+        c.status(400);
+        console.error("Signup error:", e);
+        return c.text("Signup failed. Please try again.");
     }
-})
+});
 
 userRouter.post('/signin', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env?.DATABASE_URL,
-    }).$extends(withAccelerate())
-    
-    const body = await c.req.json()
+    }).$extends(withAccelerate());
 
-    try{
+    const body = await c.req.json();
+
+    try {
         const user = await prisma.user.findFirst({
             where: {
                 username: body.username,
-                password: body.password,
-            }
-        })
-    
-        if(!user){
-            c.status(403)
+                email: body.email, // Match email during signin
+            },
+        });
+
+        if (!user) {
+            c.status(403);
             return c.json({
-                error: "user not found"
-            })
+                error: "User not found. Please check your credentials.",
+            });
         }
-    
-        const jwt = await sign({
-            id: user.id
-        }, c.env.JWT_SECRET)
-            
-        return c.json({ jwt,
-            message: "Signed in succesfully"
-         })
-    } catch(e) {
-        c.status(411)
-        return c.text("invalid")
+
+        const token = await sign(
+            { id: user.id },
+            c.env.JWT_SECRET,
+            // { expiresIn: "1h" } // Optional expiration time
+        );
+
+        return c.json({
+            jwt: token,
+            message: "Signed in successfully",
+        });
+    } catch (e) {
+        c.status(500);
+        console.error("Signin error:", e);
+        return c.text("Signin failed. Please try again.");
     }
-})
+});
+
+userRouter.get('/all', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                email: true, // Include email in the response
+            },
+        });
+
+        return c.json({ users });
+    } catch (e) {
+        console.error("Error retrieving users:", e);
+        c.status(500);
+        return c.text("Could not retrieve users");
+    }
+});

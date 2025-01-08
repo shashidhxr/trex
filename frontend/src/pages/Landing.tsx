@@ -39,8 +39,6 @@ export const Landing = () => {
                         Login
                     </button>
                 </div>
-
-                {/* {isRegistering && <p className="text-[#EEEEEE] mt-4">Registering user...</p>} */}
             </div>
 
             <Foot />
