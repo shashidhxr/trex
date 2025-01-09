@@ -8,7 +8,7 @@ export interface Blogpost {
     title: string;
     author: {
         name: string | null;
-        sub?: string; // Auth0 user ID
+        sub?: string;
     };
     publishedDate: string;
     content: string;
