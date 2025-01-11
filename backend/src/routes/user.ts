@@ -18,12 +18,29 @@ userRouter.post('/signup', async (c) => {
     const body = await c.req.json();
 
     try {
+        // Check if the user already exists by email or username
+        const existingUser = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email: body.email },
+                    { username: body.username },
+                ],
+            },
+        });
+
+        if (existingUser) {
+            return c.json({
+                message: "User already exists",
+            });
+        }
+
+        // If the user does not exist, create a new user
         const user = await prisma.user.create({
             data: {
                 name: body.name,
                 username: body.username,
                 email: body.email,
-                picture: body.picture
+                picture: body.picture,
             },
         });
 

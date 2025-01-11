@@ -16,7 +16,7 @@ export const Home = () => {
     }
 
     useEffect(() => {
-        console.log("use effect triggered")
+        console.log("use effect triggered in home")
         console.log(user)
         console.log(isAuthenticated)
         if (isAuthenticated && user && !hasSentRequest) {
