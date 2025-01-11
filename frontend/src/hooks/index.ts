@@ -43,7 +43,7 @@ export const useBlog = ({
         };
 
         fetchBlog();
-    }, [id, getAccessTokenSilently]);
+    }, []);
 
     return {
         loading,
@@ -60,10 +60,13 @@ export const useBlogs = () => {
     const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
 
     useEffect(() => {
+        console.log("use effect trggered inside use blogs")
         const fetchBlogs = async () => {
+            console.log("fetch blogs triggered")
             try {
                 const token = await getAccessTokenSilently();
                 console.log(token)
+                console.log("-----------------------------------")
                 const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -78,7 +81,7 @@ export const useBlogs = () => {
             }
         };
         fetchBlogs();
-    }, [getAccessTokenSilently]);
+    }, [isAuthenticated, user, getAccessTokenSilently]);
 
     return {
         loading,
