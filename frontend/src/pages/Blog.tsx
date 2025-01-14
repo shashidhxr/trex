@@ -26,7 +26,7 @@ export const Blog = () => {
     }
     return <div>
         <Appbar></Appbar>
-        <BlogPage blog={blog}></BlogPage>
+        <BlogPage></BlogPage>
         <BlogFooterBar></BlogFooterBar>
     </div>
 }

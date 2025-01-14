@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Foot } from '../components/Foot';
 import { Contacts } from '../components/Contacts';
 import { Boxes } from '../components/ui/backround-boxes';
+// @ts-ignore
 import { cn } from '../../lib/utils';
 
 export const Landing = () => {
