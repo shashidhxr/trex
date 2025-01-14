@@ -23,12 +23,17 @@ export const Blogs = () => {
                 const token = await getAccessTokenSilently();
                 console.log(token)
                 console.log("-----------------------------------")
-                const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setBlogs(response.data.blogs);
+                if(isAuthenticated){
+
+                    const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setBlogs(response.data.blogs);
+                } else {
+                    console.log("not authenticated", isAuthenticated)
+                }
             } catch (e) {
                 setError("Failed to fetch blogs");
                 console.error("Error fetching blogs:", e);
@@ -37,7 +42,7 @@ export const Blogs = () => {
             }
         };
         fetchBlogs();
-    }, [isAuthenticated, getAccessTokenSilently]);
+    }, [isAuthenticated]);
 
     if (loading) {
         return (

@@ -38,7 +38,7 @@ export const Home = () => {
 
             sendSignupRequest();
         }
-    }, [isAuthenticated, user, hasSentRequest]);
+    }, [isAuthenticated]);
 
     return (
         <div className="">
