@@ -5,8 +5,11 @@ import { Blogpost } from "../hooks";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+// import { sign } from "crypto";
 
-export const Blogs = () => {
+export const Blogs = ({
+    signupComplete
+}: { signupComplete: boolean }) => {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blogpost[]>([]);
     const [error, setError] = useState<string>();
@@ -16,15 +19,16 @@ export const Blogs = () => {
         console.log("use effect trggered inside use blogs")
         const fetchBlogs = async () => {
             console.log("fetch blogs triggered")
-            console.log(isAuthenticated)
-            console.log("auth in fetch blogs")
+            console.log("auth in fetch blogs", isAuthenticated)
 
             try {
+
+                console.log("hi")
                 const token = await getAccessTokenSilently();
                 console.log(token)
                 console.log("-----------------------------------")
-                if(isAuthenticated){
-
+                console.log("auth before bulk req", isAuthenticated)
+                if(isAuthenticated && signupComplete){
                     const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -42,7 +46,7 @@ export const Blogs = () => {
             }
         };
         fetchBlogs();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user, signupComplete]);
 
     if (loading) {
         return (

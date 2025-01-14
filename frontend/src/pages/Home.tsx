@@ -9,6 +9,7 @@ import { BACKEND_URL } from "../config"
 export const Home = () => {
     const { isAuthenticated, user } = useAuth0()
     const [hasSentRequest, setHasSentRequest] = useState(false);
+    const [signupComplete, setSignupComplete] = useState(false)
 
     const generateUsername = (email: string) => {
         const emailPrefix = email.split('@')[0]
@@ -21,6 +22,7 @@ export const Home = () => {
         console.log(isAuthenticated)
         if (isAuthenticated && user && !hasSentRequest) {
             const sendSignupRequest = async () => {
+                // @ts-ignore
                 const username = generateUsername(user.email)
                 try {
                     await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
@@ -31,11 +33,11 @@ export const Home = () => {
                     });
                     console.log("User data sent to server successfully");
                     setHasSentRequest(true);
+                    setSignupComplete(true);
                 } catch (error) {
                     console.error("Error sending user data to server:", error);
                 }
             };
-
             sendSignupRequest();
         }
     }, [isAuthenticated]);
@@ -45,7 +47,7 @@ export const Home = () => {
             <Appbar></Appbar>
             <div className="max-w-7xl mx-auto grid grid-cols-7">
                 <div className="max-w-3xl col-span-4">
-                    <Blogs></Blogs>
+                    <Blogs signupComplete={signupComplete}></Blogs>
                 </div>
                 <div className="max-w-xl col-span-3 my-10 ml-10 mr-8">
                     <Discussion></Discussion>
