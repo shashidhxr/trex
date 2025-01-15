@@ -24,16 +24,17 @@ export const Blogs = ({
             try {
 
                 console.log("hi")
-                const token = await getAccessTokenSilently();
-                console.log(token)
+                // const token = await getAccessTokenSilently();
+                // console.log(token)
                 console.log("-----------------------------------")
                 console.log("auth before bulk req", isAuthenticated)
                 if(isAuthenticated && signupComplete){
-                    const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
+                    const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`)
+                    //     , {
+                    //     headers: {
+                    //         Authorization: `Bearer ${token}`,
+                    //     },
+                    // });
                     setBlogs(response.data.blogs);
                 } else {
                     console.log("not authenticated", isAuthenticated)
