@@ -18,11 +18,11 @@ export const BlogCard = ({
     return (
         <Link to={`/blog/${id}`}>
             <div className="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="p-6">
-                    <div className="text-sm text-gray-500 mb-2">
+                <div className="pr-96 p-6 m-5 flex flex-col space-y-4">
+                    <div className="text-sm text-gray-500">
                         <span className="font-semibold">{authorName}</span> &middot; {publishedDate}
                     </div>
-                    <div className="text-xl font-bold text-gray-800 mb-2">
+                    <div className="text-xl font-bold text-gray-800">
                         {title}
                     </div>
                     <div className="text-gray-700 line-clamp-2">
@@ -31,5 +31,6 @@ export const BlogCard = ({
                 </div>
             </div>
         </Link>
+
     );
 };

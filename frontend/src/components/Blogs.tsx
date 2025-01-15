@@ -13,7 +13,9 @@ export const Blogs = ({
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blogpost[]>([]);
     const [error, setError] = useState<string>();
-    const { user, isAuthenticated } = useAuth0();
+    const [tokenCollected, setTokenCollected] = useState(false)
+
+    const { user, isAuthenticated, getIdTokenClaims } = useAuth0();
 
     useEffect(() => {
         console.log("use effect trggered inside use blogs")
@@ -22,19 +24,18 @@ export const Blogs = ({
             console.log("auth in fetch blogs", isAuthenticated)
 
             try {
-
                 console.log("hi")
-                // const token = await getAccessTokenSilently();
-                // console.log(token)
+                const token = fetchToken()
+                console.log(token)
                 console.log("-----------------------------------")
                 console.log("auth before bulk req", isAuthenticated)
-                if(isAuthenticated && signupComplete){
-                    const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`)
-                    //     , {
-                    //     headers: {
-                    //         Authorization: `Bearer ${token}`,
-                    //     },
-                    // });
+                if(isAuthenticated && signupComplete && tokenCollected){
+                    const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`
+                        , {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
                     setBlogs(response.data.blogs);
                 } else {
                     console.log("not authenticated", isAuthenticated)
@@ -47,7 +48,20 @@ export const Blogs = ({
             }
         };
         fetchBlogs();
-    }, [isAuthenticated, user, signupComplete]);
+    }, [isAuthenticated, user, signupComplete, tokenCollected]);
+
+    const fetchToken = async () => {
+        try {
+            const token = await getIdTokenClaims();
+            console.log("Token fetched successfully:", token);
+            setTokenCollected(true)
+            return token;
+        } catch (error) {
+            console.error("Error fetching token:", error);
+            setError("Failed to authenticate. Please log in again.");
+            return null;
+        }
+    };
 
     if (loading) {
         return (
@@ -70,16 +84,16 @@ export const Blogs = ({
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div className="mx-auto lg:col-span-3 mt-2">
+                <div className="mx-auto lg:col-span-3 mt-4">
                     {blogs.map((blog) => (
-                        <div key={blog.id} className="max-w-2xl mx-auto mr-10">
+                        <div key={blog.id} className="max-w-4xl mx-auto mr-10">
                             <BlogCard
                                 id={blog.id}
                                 authorName={blog.author.name || "unknown"}
                                 title={blog.title}
                                 content={blog.content}
                                 publishedDate={blog.publishedDate || "not available"}
-                            />
+                            ></BlogCard>
                         </div>
                     ))}
                 </div>
