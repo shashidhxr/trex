@@ -13,7 +13,7 @@ export const Blogs = ({
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blogpost[]>([]);
     const [error, setError] = useState<string>();
-    const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
 
     useEffect(() => {
         console.log("use effect trggered inside use blogs")
