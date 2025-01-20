@@ -102,7 +102,8 @@ postRouter.get('/bulk', async (c) => {
                     select: {
                         name: true
                     }
-                }
+                },
+                publishedDate: true,
             }
         });
         return c.json({
