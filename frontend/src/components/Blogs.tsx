@@ -94,7 +94,7 @@ export const Blogs = ({
                                 authorName={blog.author.name || "unknown"}
                                 title={blog.title}
                                 content={blog.content}
-                                publishedDate={blog.publishedDate || "not available"}
+                                publishedDate={(blog.publishedDate).substr(0, 10) || "not available"}
                             ></BlogCard>
                         </div>
                     ))}
