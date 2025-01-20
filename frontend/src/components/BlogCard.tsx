@@ -18,7 +18,7 @@ export const BlogCard = ({
     return (
         <Link to={`/blog/${id}`}>
             <div className="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="pr-96 p-6 m-5 flex flex-col space-y-4">
+                <div className="pr-[440px] p-6 m-5 flex flex-col space-y-4">
                     <div className="text-sm text-gray-500">
                         <span className="font-semibold">{authorName}</span> &middot; {publishedDate}
                     </div>

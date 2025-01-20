@@ -22,24 +22,26 @@ export const Blogs = ({
         const fetchBlogs = async () => {
             console.log("fetch blogs triggered")
             console.log("auth in fetch blogs", isAuthenticated)
-
+            console.log("loading---fetchblogs", loading)
+            
             try {
-                console.log("hi")
+                console.log("try block")
                 const token = fetchToken()
-                console.log(token)
+                console.log("token after fetch", token)
                 console.log("-----------------------------------")
                 console.log("auth before bulk req", isAuthenticated)
                 if(isAuthenticated && signupComplete && tokenCollected){
                     const response = await axios.get(`${BACKEND_URL}/api/v1/post/bulk`
                         , {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
-                    setBlogs(response.data.blogs);
-                } else {
-                    console.log("not authenticated", isAuthenticated)
-                }
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        });
+                        setBlogs(response.data.blogs);
+                        console.log("loading----post /bulk", loading)
+                    } else {
+                        console.log("not authenticated", isAuthenticated)
+                    }
             } catch (e) {
                 setError("Failed to fetch blogs");
                 console.error("Error fetching blogs:", e);

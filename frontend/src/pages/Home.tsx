@@ -26,6 +26,7 @@ export const Home = () => {
                 const username = generateUsername(user.email)
                 try {
                     await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
+                        id: user.sub,
                         name: user.name,
                         email: user.email,
                         picture: user.picture,
