@@ -9,7 +9,7 @@ export const BlogEditor = () => {
     const [content, setContent] = useState('');
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
-    const { getIdTokenClaims, getAccessTokenSilently, isAuthenticated, loginWithRedirect, user } = useAuth0();
+    const { getIdTokenClaims, isAuthenticated, loginWithRedirect, user } = useAuth0();
 
     const handlePublish = async () => {
         try {
