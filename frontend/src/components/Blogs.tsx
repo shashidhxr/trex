@@ -87,7 +87,7 @@ export const Blogs = ({
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div className="mx-auto lg:col-span-3 mt-4">
-                    {blogs.map((blog) => (
+                    {[...blogs].reverse().map((blog) => (
                         <div key={blog.id} className="max-w-4xl mx-auto mr-10">
                             <BlogCard
                                 id={blog.id}
