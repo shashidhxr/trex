@@ -6,5 +6,5 @@
 - Backend Environment: Hono
 - Auth: auth0
 
-https://trex-dusky.vercel.app
+https://trex0.vercel.app
 (development stage)
